@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      #mainC {
+        width: 60%;
+        display: flex;
+        margin: auto;
+        border: 1px solid black transparent;
+        box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+        box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px,
+          rgba(6, 24, 44, 0.65) 0px 4px 6px -1px,
+          rgba(255, 255, 255, 0.08) 0px 1px 0px inset;
+      }
+      #leftside {
+        border: 1px solid RED transparent;
+        margin-left: 50px;
+        margin-bottom: 50px;
+      }
+      #rightside {
+        margin-left: 180px;
+        border: 1px solid RED transparent;
+
+        margin-bottom: 50px;
+      }
+      #submit {
+        padding: 10px;
+      }
+      #Category {
+        padding-left: 25px;
+        padding-right: 25px;
+      }
+      tr {
+        box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
+          rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+      }
+
+      th,
+      td {
+        border: 1px solid black transparent;
+        padding: 10px;
+      }
+      h3 {
+        color: purple;
+      }
+      #task {
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mainC">
+      <div id="leftside">
+        <h3>Add Task</h3>
+        <hr />
+        <form id="myForm">
+          <label>Task</label><br />
+          <input
+            id="task"
+            type="text"
+            placeholder="Enter Task name"
+          /><br /><br />
+
+          <label for="start">Date</label><br />
+
+          <input type="date" id="date" name="task-start" /><br /><br />
+
+          <input id="submit" type="submit" value="Submit" />
+        </form>
+      </div>
+
+      <div id="rightside">
+        <div id="task">
+          <h3>Task List</h3>
+          <div>
+            <h3>task count</h3>
+            <button id="taskcount"></button>
+          </div>
+        </div>
+
+        <hr />
+
+        <table>
+          <thead>
+            <tr>
+              <th>Task</th>
+
+              <th>date</th>
+              <th>status</th>
+              <th>Remark</th>
+              <th>remove</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  document.querySelector("#myForm").addEventListener("submit", addItem);
+  var arr = JSON.parse(localStorage.getItem("todoList")) || [];
+  document.querySelector("#taskcount").textContent = arr.length;
+  displayTable(arr);
+
+  function addItem() {
+    event.preventDefault();
+    var task = document.querySelector("#task").value;
+    // var status = document.querySelector("#task").value;
+    var date = document.querySelector("#date").value;
+
+    function object(task, date, status) {
+      // // let form = document.getElementById(myForm);
+      // var task = form.task.value;
+      // event.preventDefault();
+      this.task = task;
+      this.status = status;
+      this.date = date;
+    }
+    let myobject = new object(task, date, status);
+    arr.push(myobject);
+
+    localStorage.setItem("todoList", JSON.stringify(arr));
+    document.querySelector("#taskcount").textContent = arr.length;
+    displayTable(arr);
+  }
+
+  //console.log(arr);
+
+  function displayTable(arr) {
+    document.querySelector("tbody").innerHTML = "";
+    //var count = 1;
+    arr.map(function (elem, index) {
+      var row = document.createElement("tr");
+
+      var td1 = document.createElement("td");
+      td1.textContent = elem.task;
+      var td2 = document.createElement("td");
+      td2.textContent = elem.date;
+      var td3 = document.createElement("td");
+      td3.setAttribute("id", "toggle");
+
+      td3.textContent = "False";
+
+      td3.addEventListener("click", function () {
+        toggle(index);
+      });
+
+      var td4 = document.createElement("td");
+      td3.setAttribute("id", "remark");
+
+      td4.textContent = "Done";
+
+      td4.addEventListener("click", function () {
+        remark(index);
+      });
+
+      var td5 = document.createElement("td");
+      td5.textContent = "remove";
+
+      td5.addEventListener("click", function () {
+        deleteTask(index);
+      });
+
+      row.append(td1, td2, td3, td4, td5);
+
+      document.querySelector("tbody").append(row);
+    });
+  }
+
+  // function toggle(index) {
+  //   //arr.splice(index, 1);
+  //   localStorage.setItem("todoList", JSON.stringify(arr));
+  //   td3.textContent = "remove";
+  //   display(arr);
+  // }
+
+  function deleteTask(index) {
+    arr.splice(index, 1);
+    localStorage.setItem("todoList", JSON.stringify(arr));
+    event.target.parentNode.remove();
+    document.querySelector("#taskcount").textContent = arr.length;
+    display(arr);
+  }
+
+  var clicked = false;
+  function toggle(index) {
+    if (!clicked) {
+      clicked = true;
+      arr.splice(index);
+      document.getElementById("toggle");
+      event.target.textContent = "False";
+      localStorage.setItem("todoList", JSON.stringify(arr));
+      display(arr);
+      document.querySelector("#taskcount").textContent = arr.length;
+    } else {
+      clicked = false;
+      arr.splice(index);
+      document.getElementById("toggle");
+      event.target.textContent = "True";
+      localStorage.setItem("todoList", JSON.stringify(arr));
+      display(arr);
+      document.querySelector("#taskcount").textContent = arr.length;
+    }
+  }
+
+  var clicked = false;
+  function remark(index) {
+    if (!clicked) {
+      clicked = true;
+      arr.splice(index);
+      document.getElementById("remark");
+      event.target.textContent = "Done";
+      event.target.parentNode.style.background = "green";
+      localStorage.setItem("todoList", JSON.stringify(arr));
+      display(arr);
+      document.querySelector("#taskcount").textContent = arr.length;
+    } else {
+      clicked = false;
+      arr.splice(index);
+      document.getElementById("remark");
+      event.target.textContent = "Pending";
+      event.target.parentNode.style.background = "red";
+      localStorage.setItem("todoList", JSON.stringify(arr));
+      display(arr);
+      document.querySelector("#taskcount").textContent = arr.length;
+    }
+  }
+</script>
