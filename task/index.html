@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="index.css" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="mainC">
+      <div id="leftside">
+        <h3>Add Task</h3>
+        <hr />
+        <form id="myForm">
+          <label>Task</label><br />
+          <input
+            id="task"
+            type="text"
+            placeholder="Enter Task name"
+          /><br /><br />
+
+          <label for="start">Date</label><br />
+
+          <input type="date" id="date" name="task-start" /><br /><br />
+
+          <input id="submit" type="submit" value="Submit" />
+        </form>
+      </div>
+
+      <div id="rightside">
+        <div id="task">
+          <h3>Task List</h3>
+          <div>
+            <h3>task count</h3>
+            <button id="taskcount"></button>
+          </div>
+        </div>
+
+        <hr />
+
+        <table>
+          <thead>
+            <tr>
+              <th>Task</th>
+
+              <th>date</th>
+              <th>status</th>
+              <th>Remark</th>
+              <th>remove</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
+
+<script src="index.js"></script>
